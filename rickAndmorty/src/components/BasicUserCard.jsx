@@ -12,13 +12,13 @@ import { useState } from "react";
 import { DetailsUserCard } from "./DetailsUserCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-export const BasicUserCard = ({ getData, results }) => {
+export const BasicUserCard = ({ getData, results,next }) => {
   const [user, setUser] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <div id="container">
-      <InfiniteScroll dataLength={results.length} next={getData} hasMore={true}>
+      <InfiniteScroll dataLength={results.length} next={getData} hasMore={next}>
         {results.map((e) => (
           <div
             id="basic_card"

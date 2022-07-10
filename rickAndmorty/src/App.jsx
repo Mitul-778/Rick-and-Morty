@@ -9,38 +9,39 @@ function App() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
+  const[next,setNext] = useState(false);
   console.log("data:", data);
   let api = `https://rickandmortyapi.com/api/character/?name=${query}&page=${page}`;
   useEffect(() => {
-    getData();
-  }, []);
+    setData([])
+  }, [query]);
 
-  const search = () => {
+  useEffect(()=>{
     let debounce;
-    setPage(1);
-    if (debounce) {
-      clearTimeout(debounce);
-    }
-    debounce = setTimeout(() => {
-      axios
-        .get(api)
-        .then((res) => setData(res.data.results))
-        .catch((err) => console.log(err));
-    }, 1000);
-  };
+    debounce= setTimeout(()=>{
+      getData();
+    },1000)
+    return ()=>clearTimeout(debounce);
+  },[query,page])
 
   const getData = () => {
     axios
       .get(api)
-      .then((res) => setData(data.concat(res.data.results)))
+      .then((res) => {
+        setData([...data,...res.data.results]);
+        if(res.data.info.next){
+          setNext(true);
+        }else{
+          setNext(false);
+        }
+      })
       .catch((err) => console.log(err));
-    setPage(page + 1);
   };
 
   return (
     <div className="App">
-      <Search search={search} setQuery={setQuery} />
-      <BasicUserCard getData={getData} results={data} />
+      <Search setPage={setPage} setQuery={setQuery} />
+      <BasicUserCard next={next} getData={getData} results={data} />
     </div>
   );
 }

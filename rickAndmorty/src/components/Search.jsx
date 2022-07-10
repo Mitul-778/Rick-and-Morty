@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { IconButton } from "@chakra-ui/react";
 
-export const Search = ({ setQuery, search }) => {
+export const Search = ({ setQuery, setPage }) => {
   return (
     <div id="search">
       <IconButton
@@ -15,7 +15,7 @@ export const Search = ({ setQuery, search }) => {
       <input
         onChange={(e) => {
           setQuery(e.target.value);
-          search();
+          setPage(1);
         }}
         type="text"
         id="searchbox"
